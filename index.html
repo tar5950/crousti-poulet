@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0D10">
+<title>Crousti Poulet · Poulet frit croustillant</title>
+<meta name="description" content="Crousti Poulet. Poulet frit croustillant. Commande en ligne, sur place, à emporter ou en livraison.">
+
+<!-- ============================================================
+     POLICES (Google Fonts)
+     Anton  : titrage street, capitales, présence affiche
+     Manrope: corps et interface, lisibilité mobile
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. VARIABLES DE THEME
+   Palette resserrée : béton sombre + un seul néon (magenta).
+   Le rouge est uniquement fonctionnel (tag épicé).
+   ============================================================ */
+:root{
+  --beton:#0E0D10;          /* fond de base */
+  --beton-2:#161419;        /* surfaces / cartes */
+  --beton-3:#1F1C24;        /* surfaces hautes / hover */
+  --ligne:#2A2730;          /* bordures discrètes */
+  --neon:#FF1F8F;           /* accent unique fort (magenta) */
+  --neon-soft:rgba(255,31,143,.16);
+  --rouge:#FF3B2F;          /* fonctionnel : tag épicé uniquement */
+  --texte:#F4EFE9;          /* blanc cassé chaud */
+  --texte-2:#A7A1AD;        /* texte secondaire */
+  --texte-3:#6E6873;        /* texte faible / placeholders */
+  --ambre:rgba(255,176,102,.10); /* halo lampadaire, hero seulement */
+  --r-s:10px;               /* rayon petit */
+  --r-m:16px;               /* rayon moyen */
+  --r-l:22px;               /* rayon large */
+  --ombre:0 20px 50px -20px rgba(0,0,0,.7);
+  --max:1180px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+/* ============================================================
+   2. RESET
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:var(--beton);
+  color:var(--texte);
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  /* texture béton : grain CSS très léger, pas d'image lourde */
+  background-image:
+    radial-gradient(rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:3px 3px;
+}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+:focus-visible{outline:2px solid var(--neon);outline-offset:3px;border-radius:4px}
+::selection{background:var(--neon);color:#fff}
+
+h1,h2,h3,.titre{
+  font-family:'Anton',sans-serif;
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:.01em;
+  line-height:.98;
+}
+
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 20px}
+
+/* libellé de section : numéro graff discret + titre aligné à gauche */
+.tag-section{
+  display:flex;align-items:baseline;gap:14px;margin-bottom:26px;
+}
+.tag-section .num{
+  font-family:'Anton',sans-serif;font-size:13px;color:var(--neon);
+  letter-spacing:.18em;border:1px solid var(--neon);
+  padding:5px 10px;border-radius:999px;line-height:1;
+}
+.tag-section h2{font-size:clamp(28px,7vw,46px)}
+.tag-section .barre{
+  flex:1;height:1px;background:linear-gradient(90deg,var(--ligne),transparent);
+  align-self:center;
+}
+
+section{padding:64px 0;position:relative}
+
+/* ============================================================
+   3. HERO
+   Vidéo de fond (hero-video.mp4) + fallback dégradé béton/néon.
+   Voile sombre pour la lisibilité du texte.
+   ============================================================ */
+.hero{
+  min-height:100svh;display:flex;flex-direction:column;
+  justify-content:flex-end;position:relative;overflow:hidden;
+  padding:0 0 calc(40px + var(--safe-bottom));
+}
+.hero__media{position:absolute;inset:0;z-index:0}
+/* fallback propre si la vidéo est absente : béton + halos néon/ambre */
+.hero__media{
+  background:
+    radial-gradient(120% 90% at 80% 10%,var(--neon-soft),transparent 55%),
+    radial-gradient(80% 60% at 10% 90%,var(--ambre),transparent 60%),
+    linear-gradient(180deg,#121016,#0B0A0D);
+}
+.hero__media video{
+  width:100%;height:100%;object-fit:cover;
+  /* la vidéo se superpose au fallback une fois chargée */
+}
+.hero__voile{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(180deg,rgba(8,7,10,.30) 0%,rgba(8,7,10,.55) 45%,rgba(8,7,10,.94) 100%);
+}
+/* reflet au sol évoqué : fine bande miroir en bas du hero */
+.hero__reflet{
+  position:absolute;left:0;right:0;bottom:0;height:120px;z-index:1;
+  background:linear-gradient(180deg,transparent,rgba(255,31,143,.05));
+  -webkit-mask:linear-gradient(180deg,transparent,#000);
+          mask:linear-gradient(180deg,transparent,#000);
+}
+.hero__inner{position:relative;z-index:2;width:100%}
+.hero__kicker{
+  display:inline-block;font-size:12px;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--texte-2);
+  border-left:2px solid var(--neon);padding-left:12px;margin-bottom:18px;
+  opacity:0;animation:rise .7s .1s forwards;
+}
+.hero h1{
+  font-size:clamp(58px,19vw,150px);
+  color:var(--texte);
+  /* halo néon diffus derrière le titre, comme une vraie source */
+  text-shadow:0 0 38px rgba(255,31,143,.30);
+  opacity:0;animation:rise .8s .2s forwards;
+}
+.hero h1 span{color:var(--neon);display:block}
+.hero__sub{
+  margin:20px 0 30px;max-width:30ch;color:var(--texte-2);
+  font-size:16px;opacity:0;animation:rise .8s .35s forwards;
+}
+.hero__cta{display:flex;gap:12px;flex-wrap:wrap;
+  opacity:0;animation:rise .8s .5s forwards;}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============================================================
+   4. BOUTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  min-height:54px;padding:0 26px;border-radius:999px;
+  font-weight:800;font-size:15px;letter-spacing:.01em;
+  transition:transform .15s ease,background .2s ease,border-color .2s ease;
+}
+.btn:active{transform:scale(.97)}
+.btn--primaire{
+  background:var(--neon);color:#0A070C;
+  /* fine bordure lumineuse qui respire très lentement */
+  box-shadow:0 0 0 1px rgba(255,31,143,.5),0 14px 36px -14px rgba(255,31,143,.7);
+  animation:pulse 4.5s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 1px rgba(255,31,143,.45),0 14px 30px -16px rgba(255,31,143,.55)}
+  50%{box-shadow:0 0 0 1px rgba(255,31,143,.75),0 16px 44px -12px rgba(255,31,143,.85)}
+}
+.btn--primaire:hover{background:#ff39a0}
+.btn--ghost{
+  background:rgba(255,255,255,.04);color:var(--texte);
+  border:1px solid var(--ligne);
+}
+.btn--ghost:hover{border-color:var(--neon);background:rgba(255,31,143,.06)}
+.btn--bloc{width:100%}
+
+/* ============================================================
+   5. BANDE ARGUMENTS (sous le hero)
+   ============================================================ */
+.bande{
+  border-top:1px solid var(--ligne);border-bottom:1px solid var(--ligne);
+  background:var(--beton-2);
+}
+.bande ul{
+  display:flex;flex-direction:column;
+}
+.bande li{
+  display:flex;align-items:center;gap:14px;padding:18px 20px;
+  border-bottom:1px solid var(--ligne);
+}
+.bande li:last-child{border-bottom:none}
+.bande .ico{
+  width:34px;height:34px;flex:none;border-radius:9px;
+  background:var(--neon-soft);color:var(--neon);
+  display:grid;place-items:center;font-size:18px;
+}
+.bande b{font-size:15px}
+.bande span{color:var(--texte-2);font-size:14px;display:block}
+
+/* ============================================================
+   6. MENU
+   ============================================================ */
+.combo{
+  margin-bottom:30px;border:1px solid var(--neon);border-radius:var(--r-l);
+  background:
+    radial-gradient(120% 140% at 100% 0%,var(--neon-soft),transparent 60%),
+    var(--beton-2);
+  padding:24px;position:relative;overflow:hidden;
+}
+.combo .flag{
+  font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.18em;
+  color:var(--neon);margin-bottom:10px;display:block;
+}
+.combo h3{font-size:26px;margin-bottom:6px}
+.combo p{color:var(--texte-2);font-size:14px;margin-bottom:18px;max-width:46ch}
+.combo .bas{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.combo .prix{font-family:'Anton',sans-serif;font-size:30px}
+
+/* filtres en pills, défilables au pouce */
+.filtres{
+  display:flex;gap:9px;overflow-x:auto;padding:4px 0 14px;
+  scrollbar-width:none;-ms-overflow-style:none;
+  margin:0 -20px 22px;padding-left:20px;padding-right:20px;
+  scroll-snap-type:x proximity;
+}
+.filtres::-webkit-scrollbar{display:none}
+.pill{
+  flex:none;padding:11px 18px;border-radius:999px;
+  background:var(--beton-2);border:1px solid var(--ligne);
+  color:var(--texte-2);font-size:14px;font-weight:600;
+  white-space:nowrap;transition:.18s;scroll-snap-align:start;
+}
+.pill[aria-pressed="true"]{
+  background:var(--neon);color:#0A070C;border-color:var(--neon);font-weight:800;
+}
+
+.grille{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
+}
+.carte{
+  background:var(--beton-2);border:1px solid var(--ligne);
+  border-radius:var(--r-m);overflow:hidden;display:flex;flex-direction:column;
+  /* coin coupé : signature street, pas le rond mou habituel */
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%);
+  transition:border-color .2s ease,transform .2s ease;
+}
+.carte:hover{border-color:rgba(255,31,143,.4)}
+.carte__img{
+  aspect-ratio:1/1;background:var(--beton-3);position:relative;
+  display:grid;place-items:center;overflow:hidden;
+}
+.carte__img img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.carte__img .ph{
+  color:var(--texte-3);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;text-align:center;padding:10px;
+}
+.carte__tags{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap}
+.tg{
+  font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:5px 9px;border-radius:999px;backdrop-filter:blur(4px);
+}
+.tg--new{background:rgba(255,31,143,.18);color:var(--neon);border:1px solid rgba(255,31,143,.5)}
+.tg--best{background:rgba(244,239,233,.12);color:var(--texte);border:1px solid rgba(244,239,233,.3)}
+.tg--epice{background:rgba(255,59,47,.16);color:var(--rouge);border:1px solid rgba(255,59,47,.5)}
+.carte__body{padding:14px;display:flex;flex-direction:column;flex:1}
+.carte__body h3{font-family:'Manrope';font-weight:800;text-transform:none;
+  font-size:16px;line-height:1.25}
+.carte__body p{color:var(--texte-2);font-size:13px;margin:6px 0 14px;flex:1}
+.carte__bas{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.carte .prix{font-family:'Anton',sans-serif;font-size:20px}
+.add{
+  width:44px;height:44px;border-radius:12px;flex:none;
+  background:var(--neon);color:#0A070C;font-size:24px;font-weight:800;
+  display:grid;place-items:center;transition:transform .15s ease;
+  line-height:1;
+}
+.add:active{transform:scale(.88)}
+
+/* ============================================================
+   7. POURQUOI
+   ============================================================ */
+.pourquoi .grille-p{display:flex;flex-direction:column;gap:14px}
+.bloc-p{
+  background:var(--beton-2);border:1px solid var(--ligne);
+  border-radius:var(--r-m);padding:24px;
+  border-left:3px solid var(--neon);
+}
+.bloc-p h3{font-family:'Manrope';font-weight:800;text-transform:none;
+  font-size:18px;margin-bottom:8px}
+.bloc-p p{color:var(--texte-2);font-size:14px}
+
+/* ============================================================
+   8. AVIS (placeholders clairement marqués)
+   ============================================================ */
+.avis .row{display:flex;flex-direction:column;gap:14px}
+.avis-c{
+  background:var(--beton-2);border:1px dashed var(--ligne);
+  border-radius:var(--r-m);padding:22px;
+}
+.avis-c .etoiles{color:var(--neon);letter-spacing:3px;margin-bottom:10px;font-size:14px}
+.avis-c p{color:var(--texte-3);font-style:italic;font-size:14px;margin-bottom:14px}
+.avis-c .ph-note{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--texte-3);border:1px solid var(--ligne);
+  display:inline-block;padding:5px 10px;border-radius:999px;
+}
+
+/* ============================================================
+   9. CARTE DE FIDELITE
+   ============================================================ */
+.fid__inner{display:flex;flex-direction:column;gap:22px}
+.fid-card{
+  position:relative;border-radius:var(--r-l);overflow:hidden;
+  background:
+    radial-gradient(130% 120% at 90% 5%,var(--neon-soft),transparent 55%),
+    linear-gradient(160deg,#1C1922,#121016);
+  border:1px solid var(--ligne);padding:26px;
+  box-shadow:var(--ombre);
+}
+.fid-card::after{
+  content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+  border-radius:50%;background:var(--neon);filter:blur(90px);opacity:.22;
+}
+.fid-card .marque{
+  font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.2em;
+  color:var(--neon);margin-bottom:24px;display:flex;
+  align-items:center;justify-content:space-between;
+}
+.fid-card .marque small{color:var(--texte-3);font-family:'Manrope';
+  font-weight:600;letter-spacing:.06em;font-size:11px}
+.fid-card .titulaire{font-size:13px;color:var(--texte-2);margin-bottom:4px}
+.fid-card .nom{font-family:'Anton',sans-serif;font-size:24px;margin-bottom:22px;
+  min-height:26px}
+.fid-prog{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.fid-bar{
+  flex:1;height:10px;border-radius:999px;background:var(--beton-3);
+  overflow:hidden;border:1px solid var(--ligne);
+}
+.fid-bar i{
+  display:block;height:100%;width:0%;border-radius:999px;
+  background:linear-gradient(90deg,var(--neon),#ff5cae);
+  transition:width .6s cubic-bezier(.22,1,.36,1);
+}
+.fid-count{font-family:'Anton',sans-serif;font-size:18px;white-space:nowrap}
+.fid-card .legende{font-size:13px;color:var(--texte-2);margin-top:8px}
+.fid-recompense{
+  margin-top:18px;padding:14px 16px;border-radius:var(--r-s);
+  background:var(--neon);color:#0A070C;font-weight:800;font-size:14px;
+  display:none;align-items:center;gap:10px;
+}
+.fid-recompense.on{display:flex;animation:rise .5s}
+
+.fid-form{
+  background:var(--beton-2);border:1px solid var(--ligne);
+  border-radius:var(--r-m);padding:22px;
+}
+.fid-form h3{font-family:'Manrope';font-weight:800;text-transform:none;
+  font-size:17px;margin-bottom:6px}
+.fid-form p.note{color:var(--texte-2);font-size:13px;margin-bottom:16px}
+.champ{margin-bottom:12px}
+.champ label{display:block;font-size:13px;color:var(--texte-2);margin-bottom:6px}
+.champ input{
+  width:100%;background:var(--beton);border:1px solid var(--ligne);
+  border-radius:var(--r-s);padding:14px;color:var(--texte);font-size:15px;
+  font-family:inherit;
+}
+.champ input:focus{border-color:var(--neon);outline:none}
+.fid-mini{font-size:12px;color:var(--texte-3);margin-top:14px;line-height:1.5}
+
+/* ============================================================
+   10. LOCALISATION
+   ============================================================ */
+.loc-grid{display:flex;flex-direction:column;gap:14px}
+.loc-c{
+  background:var(--beton-2);border:1px solid var(--ligne);
+  border-radius:var(--r-m);padding:20px;display:flex;gap:14px;align-items:flex-start;
+}
+.loc-c .ico{
+  width:38px;height:38px;flex:none;border-radius:10px;
+  background:var(--neon-soft);color:var(--neon);display:grid;place-items:center;
+  font-size:18px;
+}
+.loc-c h3{font-family:'Manrope';font-weight:800;text-transform:none;
+  font-size:15px;margin-bottom:3px}
+.loc-c p,.loc-c a{color:var(--texte-2);font-size:14px}
+.loc-c a{color:var(--neon);font-weight:600}
+
+/* ============================================================
+   11. FOOTER
+   ============================================================ */
+footer{
+  border-top:1px solid var(--ligne);background:var(--beton-2);
+  padding:46px 0 calc(120px + var(--safe-bottom));text-align:center;
+}
+footer .logo-f{font-family:'Anton',sans-serif;font-size:28px;
+  text-transform:uppercase;margin-bottom:14px}
+footer .logo-f span{color:var(--neon)}
+footer .liens{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;
+  margin-bottom:18px}
+footer .liens a{color:var(--texte-2);font-size:14px}
+footer .liens a:hover{color:var(--neon)}
+footer .reso{display:flex;justify-content:center;gap:14px;margin-bottom:22px}
+footer .reso a{
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--ligne);
+  display:grid;place-items:center;color:var(--texte-2);transition:.2s;
+}
+footer .reso a:hover{border-color:var(--neon);color:var(--neon)}
+footer .sign{color:var(--texte-3);font-size:13px}
+footer .sign b{color:var(--texte-2)}
+
+/* ============================================================
+   12. STICKY BAR MOBILE
+   ============================================================ */
+.sticky{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  display:flex;gap:10px;padding:12px 14px calc(12px + var(--safe-bottom));
+  background:linear-gradient(180deg,rgba(14,13,16,.4),var(--beton) 40%);
+  backdrop-filter:blur(10px);border-top:1px solid var(--ligne);
+}
+.sticky .btn{flex:1;min-height:52px}
+
+/* ============================================================
+   13. PANIER FLOTTANT + DRAWER
+   ============================================================ */
+.fab{
+  position:fixed;right:16px;bottom:calc(86px + var(--safe-bottom));z-index:61;
+  width:60px;height:60px;border-radius:50%;background:var(--neon);
+  color:#0A070C;display:grid;place-items:center;
+  box-shadow:0 16px 34px -10px rgba(255,31,143,.7);
+  transition:transform .15s ease;
+}
+.fab:active{transform:scale(.9)}
+.fab svg{width:26px;height:26px}
+.fab .cpt{
+  position:absolute;top:-4px;right:-4px;min-width:24px;height:24px;
+  border-radius:999px;background:var(--beton);color:var(--texte);
+  border:1px solid var(--neon);font-size:12px;font-weight:800;
+  display:grid;place-items:center;padding:0 6px;
+}
+.fab[data-vide="true"]{opacity:0;pointer-events:none;transform:scale(.6)}
+
+.overlay{
+  position:fixed;inset:0;z-index:70;background:rgba(5,4,7,.7);
+  backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.overlay.on{opacity:1;pointer-events:auto}
+
+.drawer{
+  position:fixed;right:0;top:0;bottom:0;z-index:71;
+  width:min(440px,100%);background:var(--beton);
+  border-left:1px solid var(--ligne);
+  transform:translateX(100%);transition:transform .32s cubic-bezier(.22,1,.36,1);
+  display:flex;flex-direction:column;
+}
+.drawer.on{transform:translateX(0)}
+.drawer__head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px;border-bottom:1px solid var(--ligne);
+}
+.drawer__head h3{font-size:22px}
+.drawer__close{
+  width:40px;height:40px;border-radius:10px;background:var(--beton-2);
+  border:1px solid var(--ligne);display:grid;place-items:center;font-size:20px;
+}
+.drawer__body{flex:1;overflow-y:auto;padding:18px 20px;-webkit-overflow-scrolling:touch}
+.drawer__vide{
+  text-align:center;color:var(--texte-3);padding:60px 20px;font-size:14px;
+}
+
+.ligne-art{
+  display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--ligne);
+}
+.ligne-art .mini{
+  width:54px;height:54px;flex:none;border-radius:10px;background:var(--beton-3);
+  display:grid;place-items:center;color:var(--texte-3);font-size:9px;text-align:center;
+}
+.ligne-art .info{flex:1;min-width:0}
+.ligne-art .info b{font-size:14px;display:block;font-weight:700}
+.ligne-art .info .pu{color:var(--texte-3);font-size:12px}
+.ligne-art .ctrl{display:flex;align-items:center;gap:6px;margin-top:8px}
+.qbtn{
+  width:30px;height:30px;border-radius:8px;background:var(--beton-3);
+  border:1px solid var(--ligne);display:grid;place-items:center;
+  font-size:16px;font-weight:800;
+}
+.qval{min-width:26px;text-align:center;font-weight:800;font-size:14px}
+.ligne-art .st{font-family:'Anton',sans-serif;font-size:16px;align-self:flex-start}
+
+/* suggestions upsell dans le drawer */
+.upsell{
+  margin:16px 0;padding:16px;border:1px solid var(--neon);
+  border-radius:var(--r-m);background:var(--neon-soft);
+}
+.upsell .q{font-weight:800;font-size:14px;margin-bottom:12px}
+.upsell .opts{display:flex;flex-direction:column;gap:8px}
+.upsell .opt{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--beton);border:1px solid var(--ligne);
+  border-radius:var(--r-s);padding:11px 14px;font-size:14px;
+}
+.upsell .opt b{font-weight:700}
+.upsell .opt .px{color:var(--texte-2);font-size:13px;margin-left:auto;margin-right:10px}
+.upsell .opt button{
+  background:var(--neon);color:#0A070C;font-weight:800;font-size:13px;
+  padding:8px 14px;border-radius:999px;
+}
+.upsell .skip{
+  margin-top:10px;width:100%;background:none;color:var(--texte-3);
+  font-size:13px;padding:8px;text-decoration:underline;
+}
+
+/* mode de retrait */
+.modes{margin:18px 0}
+.modes .lab{font-size:13px;color:var(--texte-2);margin-bottom:10px}
+.modes .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mode{
+  padding:14px 6px;border-radius:var(--r-s);background:var(--beton-2);
+  border:1px solid var(--ligne);text-align:center;font-size:13px;font-weight:700;
+  transition:.18s;
+}
+.mode[aria-pressed="true"]{background:var(--neon);color:#0A070C;border-color:var(--neon)}
+.champ-adr{margin-top:12px;display:none}
+.champ-adr.on{display:block}
+.champ-adr textarea{
+  width:100%;background:var(--beton-2);border:1px solid var(--ligne);
+  border-radius:var(--r-s);padding:13px;color:var(--texte);font-size:14px;
+  font-family:inherit;resize:vertical;min-height:64px;
+}
+.champ-adr textarea:focus{border-color:var(--neon);outline:none}
+
+.drawer__foot{
+  border-top:1px solid var(--ligne);padding:18px 20px calc(18px + var(--safe-bottom));
+  background:var(--beton-2);
+}
+.tot-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.tot-row span{color:var(--texte-2);font-size:14px}
+.tot-row b{font-family:'Anton',sans-serif;font-size:30px}
+
+/* toast feedback ajout panier */
+.toast{
+  position:fixed;left:50%;bottom:calc(160px + var(--safe-bottom));
+  transform:translateX(-50%) translateY(20px);
+  z-index:90;background:var(--texte);color:var(--beton);
+  font-weight:800;font-size:14px;padding:12px 20px;border-radius:999px;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s ease,transform .25s ease;
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* apparition au scroll */
+.reveal{opacity:0;transform:translateY(26px);
+  transition:opacity .7s ease,transform .7s ease}
+.reveal.vu{opacity:1;transform:none}
+
+/* ============================================================
+   14. RESPONSIVE (tablette / desktop) · mobile reste la base
+   ============================================================ */
+@media(min-width:720px){
+  .grille{grid-template-columns:repeat(3,1fr)}
+  .bande ul{flex-direction:row}
+  .bande li{flex:1;border-bottom:none;border-right:1px solid var(--ligne)}
+  .bande li:last-child{border-right:none}
+  .pourquoi .grille-p{flex-direction:row}
+  .bloc-p{flex:1}
+  .avis .row{flex-direction:row}
+  .avis-c{flex:1}
+  .loc-grid{flex-direction:row;flex-wrap:wrap}
+  .loc-c{flex:1 1 calc(50% - 7px)}
+  .fid__inner{flex-direction:row;align-items:flex-start}
+  .fid-card{flex:1.2}
+  .fid-form{flex:1}
+}
+@media(min-width:1000px){
+  .grille{grid-template-columns:repeat(4,1fr)}
+  /* la sticky bar mobile reste utile, on la garde partout pour cohérence parcours */
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- =================================================================
+     CONTENU
+     ================================================================= -->
+
+<!-- 3. HERO -->
+<header class="hero" id="haut">
+  <div class="hero__media">
+    <!-- VIDEO DE FOND : dépose un fichier "hero-video.mp4" à la racine du dépôt.
+         Si le fichier est absent, le fond béton/néon (CSS) reste affiché. -->
+    <video autoplay muted loop playsinline preload="auto" poster="hero.jpg">
+      <source src="hero-video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero__voile"></div>
+  <div class="hero__reflet"></div>
+  <div class="hero__inner">
+    <div class="wrap">
+      <span class="hero__kicker">Poulet frit croustillant</span>
+      <h1>Crousti<span>Poulet</span></h1>
+      <p class="hero__sub">Le croustillant qui claque. Commande en deux taps, récupère, savoure.</p>
+      <div class="hero__cta">
+        <a href="#menu" class="btn btn--primaire">Commander
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#fidelite" class="btn btn--ghost">Ma carte fidélité</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 5. BANDE ARGUMENTS -->
+<div class="bande">
+  <div class="wrap">
+    <ul>
+      <li><span class="ico">①</span><div><b>Frais préparé</b><span>Préparé à la commande</span></div></li>
+      <li><span class="ico">②</span><div><b>Vrai croustillant</b><span>La panure qui croque</span></div></li>
+      <li><span class="ico">③</span><div><b>Service rapide</b><span>Pensé pour aller vite</span></div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 6. MENU -->
+<section id="menu">
+  <div class="wrap">
+    <div class="tag-section reveal">
+      <span class="num">01</span>
+      <h2>Le menu</h2>
+      <span class="barre"></span>
+    </div>
+
+    <!-- FORMULE COMBO mise en avant (panier moyen, sans forcer) -->
+    <div class="combo reveal" id="combo-zone"></div>
+
+    <!-- filtres catégories -->
+    <div class="filtres" id="filtres" role="tablist" aria-label="Catégories du menu"></div>
+
+    <!-- grille produits -->
+    <div class="grille" id="grille"></div>
+  </div>
+</section>
+
+<!-- 7. POURQUOI -->
+<section class="pourquoi" id="pourquoi">
+  <div class="wrap">
+    <div class="tag-section reveal">
+      <span class="num">02</span>
+      <h2>Pourquoi Crousti</h2>
+      <span class="barre"></span>
+    </div>
+    <div class="grille-p">
+      <div class="bloc-p reveal"><h3>Frais préparé</h3><p>On prépare à la commande. Tu manges quelque chose qui vient d'être fait, pas qui attend sous une lampe.</p></div>
+      <div class="bloc-p reveal"><h3>Vrai croustillant</h3><p>Une panure travaillée pour le croquant. Le genre de texture qui s'entend quand tu mords dedans.</p></div>
+      <div class="bloc-p reveal"><h3>Pensé pour aller vite</h3><p>Commande depuis ton tel, choisis ton mode, c'est prêt quand tu arrives. Zéro temps perdu.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. AVIS (placeholders à compléter) -->
+<section class="avis" id="avis">
+  <div class="wrap">
+    <div class="tag-section reveal">
+      <span class="num">03</span>
+      <h2>Ils ont goûté</h2>
+      <span class="barre"></span>
+    </div>
+    <div class="row">
+      <div class="avis-c reveal"><div class="etoiles">★★★★★</div><p>[Avis client à compléter une fois les vrais retours collectés]</p><span class="ph-note">Placeholder · à remplacer</span></div>
+      <div class="avis-c reveal"><div class="etoiles">★★★★★</div><p>[Avis client à compléter une fois les vrais retours collectés]</p><span class="ph-note">Placeholder · à remplacer</span></div>
+      <div class="avis-c reveal"><div class="etoiles">★★★★★</div><p>[Avis client à compléter une fois les vrais retours collectés]</p><span class="ph-note">Placeholder · à remplacer</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. CARTE DE FIDELITE -->
+<section id="fidelite">
+  <div class="wrap">
+    <div class="tag-section reveal">
+      <span class="num">04</span>
+      <h2>Carte fidélité</h2>
+      <span class="barre"></span>
+    </div>
+    <div class="fid__inner">
+
+      <!-- la carte virtuelle -->
+      <div class="fid-card reveal">
+        <div class="marque">CROUSTI POULET <small>CARTE FIDÉLITÉ</small></div>
+        <div class="titulaire">Titulaire</div>
+        <div class="nom" id="fid-nom">Carte non activée</div>
+        <div class="fid-prog">
+          <div class="fid-bar"><i id="fid-fill"></i></div>
+          <span class="fid-count" id="fid-count">0 / 10</span>
+        </div>
+        <p class="legende">10 commandes passées via le site, la 11e t'offre un bowl signature.</p>
+        <div class="fid-recompense" id="fid-reco">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Plat offert débloqué. Montre cet écran au comptoir.
+        </div>
+      </div>
+
+      <!-- activation par prénom + téléphone -->
+      <div class="fid-form reveal">
+        <h3>Active ta carte</h3>
+        <p class="note">Ton prénom et ton numéro suffisent. Ta carte reste sur ce téléphone, pas de compte à créer.</p>
+        <div class="champ">
+          <label for="fid-prenom">Ton prénom</label>
+          <input type="text" id="fid-prenom" autocomplete="given-name" placeholder="Ex : Yanis">
+        </div>
+        <div class="champ">
+          <label for="fid-tel">Ton numéro</label>
+          <input type="tel" id="fid-tel" autocomplete="tel" inputmode="tel" placeholder="Ex : 06 12 34 56 78">
+        </div>
+        <button class="btn btn--primaire btn--bloc" id="fid-save">Activer ma carte</button>
+        <p class="fid-mini">Un tampon est ajouté à chaque commande envoyée via le site. La récompense se vérifie au comptoir avec ton numéro. Tu peux réinitialiser ta carte à tout moment.</p>
+        <button id="fid-reset" style="margin-top:10px;width:100%;background:none;color:var(--texte-3);font-size:12px;text-decoration:underline">Réinitialiser ma carte</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 10. LOCALISATION -->
+<section id="infos">
+  <div class="wrap">
+    <div class="tag-section reveal">
+      <span class="num">05</span>
+      <h2>Nous trouver</h2>
+      <span class="barre"></span>
+    </div>
+    <div class="loc-grid">
+      <div class="loc-c reveal">
+        <span class="ico">⌖</span>
+        <div><h3>Adresse</h3><p>[Adresse complète de Crousti Poulet]<br>[Code postal] [Ville]</p>
+        <a id="lien-maps" href="#" target="_blank" rel="noopener">Ouvrir dans Google Maps</a></div>
+      </div>
+      <div class="loc-c reveal">
+        <span class="ico">◷</span>
+        <div><h3>Horaires</h3><p>[Lun à Ven : 11h30 à 14h30 et 18h à 23h]<br>[Sam à Dim : 18h à minuit]</p></div>
+      </div>
+      <div class="loc-c reveal">
+        <span class="ico">☏</span>
+        <div><h3>Téléphone</h3><a id="lien-tel" href="#">[Numéro de téléphone]</a></div>
+      </div>
+      <div class="loc-c reveal">
+        <span class="ico">✆</span>
+        <div><h3>WhatsApp</h3><a id="lien-wa" href="#" target="_blank" rel="noopener">Commander sur WhatsApp</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="logo-f">CROUSTI<span>POULET</span></div>
+    <div class="liens">
+      <a href="#menu">Menu</a>
+      <a href="#fidelite">Fidélité</a>
+      <a href="#infos">Infos</a>
+      <a href="#haut">Haut de page</a>
+    </div>
+    <div class="reso" id="reseaux"></div>
+    <p class="sign">Site par <b>TK Digital</b></p>
+  </div>
+</footer>
+
+<!-- 12. STICKY BAR MOBILE -->
+<div class="sticky">
+  <a href="#menu" class="btn btn--primaire">Commander</a>
+  <a id="sticky-call" href="#" class="btn btn--ghost">Appeler</a>
+</div>
+
+<!-- 13. PANIER : FAB + OVERLAY + DRAWER -->
+<button class="fab" id="fab" data-vide="true" aria-label="Ouvrir le panier">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M6 6h15l-1.5 9h-12L6 6zM6 6L5 3H2M9 20a1 1 0 100-2 1 1 0 000 2zM18 20a1 1 0 100-2 1 1 0 000 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span class="cpt" id="fab-cpt">0</span>
+</button>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="drawer" id="drawer" aria-label="Panier" aria-modal="true" role="dialog">
+  <div class="drawer__head">
+    <h3>Ton panier</h3>
+    <button class="drawer__close" id="drawer-close" aria-label="Fermer le panier">✕</button>
+  </div>
+  <div class="drawer__body" id="drawer-body"></div>
+  <div class="drawer__foot" id="drawer-foot" style="display:none">
+    <div class="tot-row"><span>Total</span><b id="tot">0,00 €</b></div>
+    <button class="btn btn--primaire btn--bloc" id="valider">Envoyer la commande sur WhatsApp</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast">Ajouté au panier</div>
+
+<script>
+/* ================================================================
+   CONFIGURATION CENTRALISEE
+   Personnalise UNIQUEMENT ce bloc. Tout le reste est automatique.
+   ================================================================ */
+const CONFIG = {
+  // Numéro WhatsApp au format international SANS le "+", SANS espaces.
+  // Exemple France : 33612345678  (le 0 initial devient 33)
+  whatsapp: "[NUMERO_WHATSAPP_INTERNATIONAL]",
+
+  // Numéro de téléphone affiché et bouton "Appeler"
+  telephone: "[NUMERO_DE_TELEPHONE]",
+
+  // Coordonnées
+  adresse:   "[Adresse complète de Crousti Poulet]",
+  ville:     "[Code postal et ville]",
+  lienMaps:  "[Lien Google Maps de Crousti Poulet]",
+
+  // Réseaux sociaux (laisser vide "" pour masquer une icône)
+  instagram: "[Lien Instagram]",
+  tiktok:    "[Lien TikTok]",
+  snapchat:  "[Lien Snapchat]",
+
+  // Devise affichée
+  devise: "€",
+
+  // Mécanique fidélité : nombre de tampons avant la récompense
+  paliersFidelite: 10
+};
+
+/* ================================================================
+   DONNEES MENU  ·  PLACEHOLDER A REMPLACER PAR LE VRAI MENU
+   ----------------------------------------------------------------
+   IMPORTANT : noms, descriptions et prix ci-dessous sont des
+   PLACEHOLDERS de structure, comme les crochets ailleurs sur le site.
+   Remplace chaque "nom", "desc" et "prix" par le vrai menu Crousti
+   Poulet. Ne touche à rien d'autre, le reste du site s'adapte seul.
+
+   Champs :
+   - id    : identifiant unique, ne pas dupliquer
+   - cat   : catégorie (sert aux filtres)
+   - nom   : nom affiché
+   - desc  : description courte
+   - prix  : nombre en euros (ex 9.90)
+   - plat  : true = compte pour la fidélité (un bowl principal)
+   - img   : nom du fichier image à la racine du dépôt (.jpg)
+             si le fichier est absent, un placeholder propre s'affiche
+   - tags  : "new" (nouveau), "best" (best-seller), "epice" (épicé)
+
+   Concept réel : base de riz, poulet pané croustillant émincé,
+   double sauce, oignons frits, herbes, sésame, en barquette kraft.
+   ================================================================ */
+const MENU = [
+  // ---- BOWLS SIGNATURE (le coeur du concept) ----
+  {id:"bw1",cat:"Bowls",nom:"[Bowl Signature]",desc:"[Riz, poulet croustillant émincé, sauce blanche, sauce sucrée-épicée, oignons frits, herbes, sésame]",prix:10.90,plat:true,img:"bowl-signature.jpg",tags:["best"]},
+  {id:"bw2",cat:"Bowls",nom:"[Bowl Fire]",desc:"[Version épicée : poulet croustillant glacé sauce piquante, sauce blanche en contraste]",prix:11.90,plat:true,img:"bowl-epice.jpg",tags:["epice","new"]},
+  {id:"bw3",cat:"Bowls",nom:"[Bowl Cheese]",desc:"[Riz, poulet croustillant, sauce fromagère généreuse, oignons frits]",prix:11.90,plat:true,img:"bowl-cheese.jpg",tags:[]},
+  {id:"bw4",cat:"Bowls",nom:"[Bowl Classic]",desc:"[Riz, poulet croustillant, sauce maison, herbes fraîches]",prix:9.90,plat:true,img:"bowl-classic.jpg",tags:[]},
+
+  // ---- BOWLS XL / A PARTAGER ----
+  {id:"xl1",cat:"Bowls XL",nom:"[Bowl XL Signature]",desc:"[Grand format, double portion de poulet croustillant sur riz, double sauce]",prix:15.90,plat:true,img:"bowl-xl.jpg",tags:["best"]},
+  {id:"xl2",cat:"Bowls XL",nom:"[Bowl XL à partager]",desc:"[Format généreux pour deux, poulet croustillant abondant]",prix:22.90,plat:true,img:"bowl-xl-partage.jpg",tags:[]},
+
+  // ---- SUPPLEMENTS ----
+  {id:"su1",cat:"Suppléments",nom:"[Supplément poulet croustillant]",desc:"[Une portion de poulet croustillant en plus]",prix:3.90,plat:false,img:"supp-poulet.jpg",tags:["best"]},
+  {id:"su2",cat:"Suppléments",nom:"[Frites]",desc:"[Frites, à compléter]",prix:3.50,plat:false,img:"sides.jpg",tags:[]},
+  {id:"su3",cat:"Suppléments",nom:"[Oignons frits]",desc:"[Portion d'oignons frits croustillants]",prix:2.50,plat:false,img:"supp-oignons.jpg",tags:[]},
+  {id:"su4",cat:"Suppléments",nom:"[Riz nature]",desc:"[Une portion de riz en plus]",prix:2.50,plat:false,img:"supp-riz.jpg",tags:[]},
+
+  // ---- SAUCES ----
+  {id:"sa1",cat:"Sauces",nom:"[Sauce blanche signature]",desc:"[À renseigner]",prix:1.00,plat:false,img:"sauces.jpg",tags:["best"]},
+  {id:"sa2",cat:"Sauces",nom:"[Sauce sucrée-épicée]",desc:"[À renseigner]",prix:1.00,plat:false,img:"sauces.jpg",tags:["epice"]},
+  {id:"sa3",cat:"Sauces",nom:"[Sauce maison]",desc:"[À renseigner]",prix:1.00,plat:false,img:"sauces.jpg",tags:[]},
+
+  // ---- BOISSONS ----
+  {id:"bo1",cat:"Boissons",nom:"[Soda 33cl]",desc:"[Au choix selon disponibilité]",prix:2.00,plat:false,img:"boissons.jpg",tags:[]},
+  {id:"bo2",cat:"Boissons",nom:"[Eau 50cl]",desc:"[Plate ou pétillante]",prix:1.50,plat:false,img:"boissons.jpg",tags:[]},
+  {id:"bo3",cat:"Boissons",nom:"[Boisson fraîche maison]",desc:"[Selon préparation du jour]",prix:2.50,plat:false,img:"boissons.jpg",tags:["new"]},
+
+  // ---- DESSERTS ----
+  {id:"de1",cat:"Desserts",nom:"[Dessert 1]",desc:"[À renseigner]",prix:2.50,plat:false,img:"desserts.jpg",tags:[]},
+  {id:"de2",cat:"Desserts",nom:"[Dessert 2]",desc:"[À renseigner]",prix:3.00,plat:false,img:"desserts.jpg",tags:["best"]},
+  {id:"de3",cat:"Desserts",nom:"[Dessert 3]",desc:"[À renseigner]",prix:3.50,plat:false,img:"desserts.jpg",tags:["new"]}
+];
+
+/* FORMULE COMBO mise en avant (incitation panier moyen, sans forcer).
+   PLACEHOLDER : remplace nom, desc et prix par la vraie formule. */
+const COMBO = {
+  id:"combo1",cat:"Formules",
+  nom:"[Menu Crousti]",
+  desc:"[Un bowl signature, une boisson et un dessert. La formule qui revient moins cher que pris séparément. À ajuster.]",
+  prix:14.90,plat:true,img:"hero.jpg",tags:["best"]
+};
+
+/* SUGGESTIONS UPSELL : déclenchées au bon moment, un tap pour accepter,
+   un tap pour ignorer. Jamais bloquant, montrées une fois par session.
+   Les "id" pointent vers des produits du MENU ci-dessus. */
+const UPSELL = {
+  boisson:    {q:"Tu ajoutes une boisson ?", id:"bo1"},
+  supplement: {q:"Tu rajoutes du poulet croustillant ?", id:"su1"},
+  sauce:      {q:"Une sauce en plus ?", id:"sa1"},
+  dessert:    {q:"Un dessert pour finir ?", id:"de2"}
+};
+
+/* ================================================================
+   ETAT (panier persisté en localStorage)
+   Structure pensée pour brancher un paiement plus tard sans casser.
+   ================================================================ */
+const LS_PANIER = "crousti_panier_v1";
+const LS_FID    = "crousti_fidelite_v1";
+
+let panier = chargerPanier();
+let modeChoisi = "emporter";          // emporter | surplace | livraison
+let upsellMontres = {};               // suivi des suggestions déjà affichées
+let toutLeMenu = [COMBO, ...MENU];    // index unique pour retrouver un produit
+
+function chargerPanier(){
+  try{ return JSON.parse(localStorage.getItem(LS_PANIER)) || {}; }
+  catch(e){ return {}; }
+}
+function sauverPanier(){
+  try{ localStorage.setItem(LS_PANIER, JSON.stringify(panier)); }catch(e){}
+}
+function produitParId(id){ return toutLeMenu.find(p=>p.id===id); }
+function fmt(n){ return n.toFixed(2).replace(".",",")+" "+CONFIG.devise; }
+
+/* ================================================================
+   INITIALISATION INTERFACE
+   ================================================================ */
+function initConfig(){
+  // liens téléphone / whatsapp / maps / réseaux à partir de CONFIG
+  const tel = CONFIG.telephone;
+  document.getElementById("lien-tel").textContent = tel;
+  document.getElementById("lien-tel").href = "tel:"+tel.replace(/\s/g,"");
+  document.getElementById("sticky-call").href = "tel:"+tel.replace(/\s/g,"");
+
+  document.getElementById("lien-maps").href = CONFIG.lienMaps;
+  document.getElementById("lien-wa").href =
+    "https://wa.me/"+CONFIG.whatsapp.replace(/\D/g,"");
+
+  // réseaux : on n'affiche que ceux renseignés
+  const r = document.getElementById("reseaux");
+  const reseaux = [
+    {k:CONFIG.instagram,t:"IG"},
+    {k:CONFIG.tiktok,t:"TT"},
+    {k:CONFIG.snapchat,t:"SC"}
+  ];
+  reseaux.forEach(x=>{
+    if(x.k && x.k.indexOf("[")!==0){
+      const a=document.createElement("a");
+      a.href=x.k;a.target="_blank";a.rel="noopener";
+      a.textContent=x.t;a.setAttribute("aria-label",x.t);
+      r.appendChild(a);
+    }
+  });
+}
+
+/* ---- MENU : combo, filtres, grille ---- */
+function tagHTML(tags){
+  const map={new:["tg--new","Nouveau"],best:["tg--best","Best-seller"],epice:["tg--epice","Épicé"]};
+  return tags.map(t=>`<span class="tg ${map[t][0]}">${map[t][1]}</span>`).join("");
+}
+
+function rendreCombo(){
+  const z=document.getElementById("combo-zone");
+  z.innerHTML=`
+    <span class="flag">FORMULE · LE BON PLAN</span>
+    <h3>${COMBO.nom}</h3>
+    <p>${COMBO.desc}</p>
+    <div class="bas">
+      <span class="prix">${fmt(COMBO.prix)}</span>
+      <button class="btn btn--primaire" data-add="${COMBO.id}">Ajouter la formule</button>
+    </div>`;
+}
+
+function categories(){
+  const cats=[...new Set(MENU.map(p=>p.cat))];
+  return ["Tout",...cats];
+}
+
+function rendreFiltres(){
+  const f=document.getElementById("filtres");
+  f.innerHTML="";
+  categories().forEach((c,i)=>{
+    const b=document.createElement("button");
+    b.className="pill";b.textContent=c;b.setAttribute("role","tab");
+    b.setAttribute("aria-pressed", i===0?"true":"false");
+    b.addEventListener("click",()=>{
+      [...f.children].forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true");
+      rendreGrille(c);
+    });
+    f.appendChild(b);
+  });
+}
+
+function rendreGrille(cat="Tout"){
+  const g=document.getElementById("grille");
+  g.innerHTML="";
+  MENU.filter(p=>cat==="Tout"||p.cat===cat).forEach(p=>{
+    const c=document.createElement("article");
+    c.className="carte reveal vu";
+    c.innerHTML=`
+      <div class="carte__img">
+        <div class="carte__tags">${tagHTML(p.tags)}</div>
+        <img src="${p.img||''}" alt="${p.nom}" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
+        <span class="ph" style="display:none">Photo<br>${p.nom}</span>
+      </div>
+      <div class="carte__body">
+        <h3>${p.nom}</h3>
+        <p>${p.desc}</p>
+        <div class="carte__bas">
+          <span class="prix">${fmt(p.prix)}</span>
+          <button class="add" data-add="${p.id}" aria-label="Ajouter ${p.nom}">+</button>
+        </div>
+      </div>`;
+    g.appendChild(c);
+  });
+}
+
+/* ================================================================
+   PANIER : ajout / retrait / rendu / upsell
+   ================================================================ */
+function ajouter(id,silencieux){
+  panier[id]=(panier[id]||0)+1;
+  sauverPanier();
+  majBadge();
+  if(!silencieux){
+    const p=produitParId(id);
+    toast("Ajouté : "+p.nom);
+    // déclenche une suggestion contextuelle si produit "plat"
+    if(p.plat) declencherUpsell();
+  }
+  rendreDrawer();
+}
+function retirer(id){
+  if(!panier[id])return;
+  panier[id]--;
+  if(panier[id]<=0) delete panier[id];
+  sauverPanier();majBadge();rendreDrawer();
+}
+function nbArticles(){
+  return Object.values(panier).reduce((a,b)=>a+b,0);
+}
+function totalPanier(){
+  let t=0;
+  for(const id in panier){
+    const p=produitParId(id); if(p) t+=p.prix*panier[id];
+  }
+  return t;
+}
+function majBadge(){
+  const n=nbArticles();
+  document.getElementById("fab-cpt").textContent=n;
+  document.getElementById("fab").setAttribute("data-vide", n===0?"true":"false");
+}
+
+/* upsell : on choisit la première suggestion pertinente non encore montrée */
+function declencherUpsell(){
+  const ordre=["frites","boisson","sauce","dessert"];
+  for(const k of ordre){
+    const sugg=UPSELL[k];
+    if(upsellMontres[k]) continue;
+    if(panier[sugg.id]) continue;       // déjà dans le panier, on saute
+    upsellMontres[k]=true;
+    upsellEnAttente=k;
+    return;
+  }
+}
+let upsellEnAttente=null;
+
+function blocUpsell(){
+  if(!upsellEnAttente) return "";
+  const s=UPSELL[upsellEnAttente];
+  const p=produitParId(s.id);
+  return `
+    <div class="upsell">
+      <div class="q">${s.q}</div>
+      <div class="opts">
+        <div class="opt">
+          <b>${p.nom}</b>
+          <span class="px">${fmt(p.prix)}</span>
+          <button data-upadd="${p.id}">Ajouter</button>
+        </div>
+      </div>
+      <button class="skip" data-upskip="1">Non merci</button>
+    </div>`;
+}
+
+function rendreDrawer(){
+  const body=document.getElementById("drawer-body");
+  const foot=document.getElementById("drawer-foot");
+  const ids=Object.keys(panier);
+
+  if(ids.length===0){
+    body.innerHTML=`<div class="drawer__vide">Ton panier est vide.<br>Ajoute un produit depuis le menu.</div>`;
+    foot.style.display="none";
+    return;
+  }
+
+  let html="";
+  ids.forEach(id=>{
+    const p=produitParId(id); if(!p)return;
+    const q=panier[id];
+    html+=`
+      <div class="ligne-art">
+        <div class="mini">${p.nom.split(" ")[0]}</div>
+        <div class="info">
+          <b>${p.nom}</b>
+          <span class="pu">${fmt(p.prix)} l'unité</span>
+          <div class="ctrl">
+            <button class="qbtn" data-moins="${id}" aria-label="Retirer un ${p.nom}">−</button>
+            <span class="qval">${q}</span>
+            <button class="qbtn" data-plus="${id}" aria-label="Ajouter un ${p.nom}">+</button>
+          </div>
+        </div>
+        <span class="st">${fmt(p.prix*q)}</span>
+      </div>`;
+  });
+
+  // suggestion upsell contextuelle (une à la fois, ignorable)
+  html+=blocUpsell();
+
+  // choix du mode + champ adresse conditionnel
+  html+=`
+    <div class="modes">
+      <div class="lab">Comment tu récupères ?</div>
+      <div class="opts">
+        <button class="mode" data-mode="emporter"  aria-pressed="${modeChoisi==='emporter'}">À emporter</button>
+        <button class="mode" data-mode="surplace"  aria-pressed="${modeChoisi==='surplace'}">Sur place</button>
+        <button class="mode" data-mode="livraison" aria-pressed="${modeChoisi==='livraison'}">Livraison</button>
+      </div>
+      <div class="champ-adr ${modeChoisi==='livraison'?'on':''}" id="zone-adr">
+        <textarea id="adresse-livraison" placeholder="Adresse complète de livraison (rue, code, étage)"></textarea>
+      </div>
+    </div>`;
+
+  body.innerHTML=html;
+  document.getElementById("tot").textContent=fmt(totalPanier());
+  foot.style.display="block";
+}
+
+/* ================================================================
+   OUVERTURE / FERMETURE DU DRAWER
+   ================================================================ */
+function ouvrirPanier(){
+  rendreDrawer();
+  document.getElementById("overlay").classList.add("on");
+  document.getElementById("drawer").classList.add("on");
+  document.body.style.overflow="hidden";
+}
+function fermerPanier(){
+  document.getElementById("overlay").classList.remove("on");
+  document.getElementById("drawer").classList.remove("on");
+  document.body.style.overflow="";
+}
+
+/* ================================================================
+   GENERATION DU MESSAGE WHATSAPP (fonction isolée)
+   Brancher un paiement plus tard = remplacer l'appel à cette fonction
+   par l'étape de paiement, sans toucher au reste.
+   ================================================================ */
+function construireMessageWA(){
+  const libMode={emporter:"À emporter",surplace:"Sur place",livraison:"Livraison"};
+  let m="Bonjour, je passe commande sur le site Crousti Poulet.\n\n";
+  m+="Commande :\n";
+  for(const id in panier){
+    const p=produitParId(id);
+    m+="- "+panier[id]+" x "+p.nom+"  ("+fmt(p.prix*panier[id])+")\n";
+  }
+  m+="\nTotal : "+fmt(totalPanier());
+  m+="\nMode : "+libMode[modeChoisi];
+
+  if(modeChoisi==="livraison"){
+    const adr=(document.getElementById("adresse-livraison")||{}).value||"";
+    m+="\nAdresse : "+(adr.trim()||"[adresse à préciser]");
+  }
+
+  // carte fidélité : on rappelle l'identité si activée
+  const fid=lireFidelite();
+  if(fid && fid.prenom){
+    m+="\n\nCarte fidélité : "+fid.prenom+" ("+fid.tel+")";
+  }
+  m+="\n\nMerci.";
+  return encodeURIComponent(m);
+}
+
+function envoyerCommande(){
+  if(nbArticles()===0)return;
+  const num=CONFIG.whatsapp.replace(/\D/g,"");
+  const url="https://wa.me/"+num+"?text="+construireMessageWA();
+
+  // commande validée via le site : on crédite un tampon fidélité
+  crediterFidelite();
+
+  window.open(url,"_blank");
+}
+
+/* ================================================================
+   CARTE DE FIDELITE
+   Identité : prénom + téléphone, stockés sur l'appareil.
+   1 commande envoyée via le site = 1 tampon. Palier = CONFIG.paliersFidelite.
+   Limite assumée V1 : compteur local, vérification au comptoir.
+   ================================================================ */
+function lireFidelite(){
+  try{ return JSON.parse(localStorage.getItem(LS_FID)); }
+  catch(e){ return null; }
+}
+function ecrireFidelite(o){
+  try{ localStorage.setItem(LS_FID, JSON.stringify(o)); }catch(e){}
+}
+function rendreFidelite(){
+  const f=lireFidelite();
+  const nom=document.getElementById("fid-nom");
+  const fill=document.getElementById("fid-fill");
+  const count=document.getElementById("fid-count");
+  const reco=document.getElementById("fid-reco");
+  const palier=CONFIG.paliersFidelite;
+
+  if(!f || !f.prenom){
+    nom.textContent="Carte non activée";
+    fill.style.width="0%";
+    count.textContent="0 / "+palier;
+    reco.classList.remove("on");
+    return;
+  }
+  nom.textContent=f.prenom;
+  const tampons=Math.min(f.tampons||0,palier);
+  fill.style.width=((tampons/palier)*100)+"%";
+  count.textContent=tampons+" / "+palier;
+
+  if((f.tampons||0)>=palier){
+    reco.classList.add("on");
+  }else{
+    reco.classList.remove("on");
+  }
+}
+function activerFidelite(){
+  const prenom=document.getElementById("fid-prenom").value.trim();
+  const tel=document.getElementById("fid-tel").value.trim();
+  if(!prenom || !tel){
+    toast("Prénom et numéro requis");
+    return;
+  }
+  const existant=lireFidelite();
+  // on garde les tampons si on réactive avec le même numéro
+  const tampons=(existant && existant.tel===tel)?(existant.tampons||0):0;
+  ecrireFidelite({prenom,tel,tampons});
+  rendreFidelite();
+  toast("Carte activée");
+}
+function crediterFidelite(){
+  const f=lireFidelite();
+  if(!f || !f.prenom) return;       // pas de carte active, rien à créditer
+  f.tampons=(f.tampons||0)+1;
+  ecrireFidelite(f);
+  rendreFidelite();
+}
+function resetFidelite(){
+  localStorage.removeItem(LS_FID);
+  document.getElementById("fid-prenom").value="";
+  document.getElementById("fid-tel").value="";
+  rendreFidelite();
+  toast("Carte réinitialisée");
+}
+
+/* ================================================================
+   TOAST
+   ================================================================ */
+let toastTimer=null;
+function toast(txt){
+  const t=document.getElementById("toast");
+  t.textContent=txt;
+  t.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("on"),1900);
+}
+
+/* ================================================================
+   APPARITION AU SCROLL (sobre : fondu + léger translate)
+   ================================================================ */
+function initReveal(){
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("vu"); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+}
+
+/* ================================================================
+   ECOUTEURS D'EVENEMENTS (délégation)
+   ================================================================ */
+function initEvents(){
+  // clics globaux délégués
+  document.body.addEventListener("click",(e)=>{
+    const t=e.target.closest("[data-add],[data-plus],[data-moins],[data-mode],[data-upadd],[data-upskip]");
+    if(!t)return;
+
+    if(t.hasAttribute("data-add")){ ajouter(t.getAttribute("data-add")); }
+    else if(t.hasAttribute("data-plus")){ ajouter(t.getAttribute("data-plus"),true); }
+    else if(t.hasAttribute("data-moins")){ retirer(t.getAttribute("data-moins")); }
+    else if(t.hasAttribute("data-upadd")){
+      ajouter(t.getAttribute("data-upadd"),true);
+      upsellEnAttente=null; rendreDrawer();
+    }
+    else if(t.hasAttribute("data-upskip")){
+      upsellEnAttente=null; rendreDrawer();
+    }
+    else if(t.hasAttribute("data-mode")){
+      modeChoisi=t.getAttribute("data-mode");
+      rendreDrawer();
+    }
+  });
+
+  document.getElementById("fab").addEventListener("click",ouvrirPanier);
+  document.getElementById("drawer-close").addEventListener("click",fermerPanier);
+  document.getElementById("overlay").addEventListener("click",fermerPanier);
+  document.getElementById("valider").addEventListener("click",envoyerCommande);
+
+  document.getElementById("fid-save").addEventListener("click",activerFidelite);
+  document.getElementById("fid-reset").addEventListener("click",resetFidelite);
+
+  // échap ferme le panier
+  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape")fermerPanier(); });
+}
+
+/* ================================================================
+   DEMARRAGE
+   ================================================================ */
+function init(){
+  initConfig();
+  rendreCombo();
+  rendreFiltres();
+  rendreGrille("Tout");
+  majBadge();
+  rendreFidelite();
+  initReveal();
+  initEvents();
+
+  // pré-remplir le formulaire fidélité si déjà activé sur cet appareil
+  const f=lireFidelite();
+  if(f && f.prenom){
+    document.getElementById("fid-prenom").value=f.prenom;
+    document.getElementById("fid-tel").value=f.tel;
+  }
+}
+document.addEventListener("DOMContentLoaded",init);
+</script>
+</body>
+</html>
