@@ -29,6 +29,7 @@
   --ligne:#2A2730;          /* bordures discrètes */
   --neon:#FF1F8F;           /* accent unique fort (magenta) */
   --neon-soft:rgba(255,31,143,.16);
+  --sur-neon:#FFFFFF;       /* texte/icônes posés sur le néon (CTA) */
   --rouge:#FF3B2F;          /* fonctionnel : tag épicé uniquement */
   --texte:#F4EFE9;          /* blanc cassé chaud */
   --texte-2:#A7A1AD;        /* texte secondaire */
@@ -162,7 +163,7 @@ section{padding:64px 0;position:relative}
 }
 .btn:active{transform:scale(.97)}
 .btn--primaire{
-  background:var(--neon);color:#0A070C;
+  background:var(--neon);color:var(--sur-neon);
   /* fine bordure lumineuse qui respire très lentement */
   box-shadow:0 0 0 1px rgba(255,31,143,.5),0 14px 36px -14px rgba(255,31,143,.7);
   animation:pulse 4.5s ease-in-out infinite;
@@ -236,7 +237,7 @@ section{padding:64px 0;position:relative}
   white-space:nowrap;transition:.18s;scroll-snap-align:start;
 }
 .pill[aria-pressed="true"]{
-  background:var(--neon);color:#0A070C;border-color:var(--neon);font-weight:800;
+  background:var(--neon);color:var(--sur-neon);border-color:var(--neon);font-weight:800;
 }
 
 .grille{
@@ -277,7 +278,7 @@ section{padding:64px 0;position:relative}
 .carte .prix{font-family:'Anton',sans-serif;font-size:20px}
 .add{
   width:44px;height:44px;border-radius:12px;flex:none;
-  background:var(--neon);color:#0A070C;font-size:24px;font-weight:800;
+  background:var(--neon);color:var(--sur-neon);font-size:24px;font-weight:800;
   display:grid;place-items:center;transition:transform .15s ease;
   line-height:1;
 }
@@ -352,7 +353,7 @@ section{padding:64px 0;position:relative}
 .fid-card .legende{font-size:13px;color:var(--texte-2);margin-top:8px}
 .fid-recompense{
   margin-top:18px;padding:14px 16px;border-radius:var(--r-s);
-  background:var(--neon);color:#0A070C;font-weight:800;font-size:14px;
+  background:var(--neon);color:var(--sur-neon);font-weight:800;font-size:14px;
   display:none;align-items:center;gap:10px;
 }
 .fid-recompense.on{display:flex;animation:rise .5s}
@@ -432,7 +433,7 @@ footer .sign b{color:var(--texte-2)}
 .fab{
   position:fixed;right:16px;bottom:calc(86px + var(--safe-bottom));z-index:61;
   width:60px;height:60px;border-radius:50%;background:var(--neon);
-  color:#0A070C;display:grid;place-items:center;
+  color:var(--sur-neon);display:grid;place-items:center;
   box-shadow:0 16px 34px -10px rgba(255,31,143,.7);
   transition:transform .15s ease;
 }
@@ -508,7 +509,7 @@ footer .sign b{color:var(--texte-2)}
 .upsell .opt b{font-weight:700}
 .upsell .opt .px{color:var(--texte-2);font-size:13px;margin-left:auto;margin-right:10px}
 .upsell .opt button{
-  background:var(--neon);color:#0A070C;font-weight:800;font-size:13px;
+  background:var(--neon);color:var(--sur-neon);font-weight:800;font-size:13px;
   padding:8px 14px;border-radius:999px;
 }
 .upsell .skip{
@@ -525,7 +526,7 @@ footer .sign b{color:var(--texte-2)}
   border:1px solid var(--ligne);text-align:center;font-size:13px;font-weight:700;
   transition:.18s;
 }
-.mode[aria-pressed="true"]{background:var(--neon);color:#0A070C;border-color:var(--neon)}
+.mode[aria-pressed="true"]{background:var(--neon);color:var(--sur-neon);border-color:var(--neon)}
 .champ-adr{margin-top:12px;display:none}
 .champ-adr.on{display:block}
 .champ-adr textarea{
@@ -534,6 +535,21 @@ footer .sign b{color:var(--texte-2)}
   font-family:inherit;resize:vertical;min-height:64px;
 }
 .champ-adr textarea:focus{border-color:var(--neon);outline:none}
+
+.client-bloc{margin:18px 0 4px}
+.client-bloc .lab{font-size:13px;color:var(--texte-2);margin-bottom:10px}
+.client-bloc .champ{margin-bottom:10px}
+.client-bloc label{display:block;font-size:13px;color:var(--texte-2);margin-bottom:6px}
+.client-bloc input{
+  width:100%;background:var(--beton-2);border:1px solid var(--ligne);
+  border-radius:var(--r-s);padding:13px;color:var(--texte);font-size:15px;
+  font-family:inherit;
+}
+.client-bloc input:focus{border-color:var(--neon);outline:none}
+.client-err{
+  display:none;color:var(--rouge);font-size:13px;font-weight:600;
+  margin-top:8px;
+}
 
 .drawer__foot{
   border-top:1px solid var(--ligne);padding:18px 20px calc(18px + var(--safe-bottom));
@@ -855,55 +871,31 @@ const CONFIG = {
    double sauce, oignons frits, herbes, sésame, en barquette kraft.
    ================================================================ */
 const MENU = [
-  // ---- BOWLS SIGNATURE (le coeur du concept) ----
-  {id:"bw1",cat:"Bowls",nom:"[Bowl Signature]",desc:"[Riz, poulet croustillant émincé, sauce blanche, sauce sucrée-épicée, oignons frits, herbes, sésame]",prix:10.90,plat:true,img:"bowl-signature.jpg",tags:["best"]},
-  {id:"bw2",cat:"Bowls",nom:"[Bowl Fire]",desc:"[Version épicée : poulet croustillant glacé sauce piquante, sauce blanche en contraste]",prix:11.90,plat:true,img:"bowl-epice.jpg",tags:["epice","new"]},
-  {id:"bw3",cat:"Bowls",nom:"[Bowl Cheese]",desc:"[Riz, poulet croustillant, sauce fromagère généreuse, oignons frits]",prix:11.90,plat:true,img:"bowl-cheese.jpg",tags:[]},
-  {id:"bw4",cat:"Bowls",nom:"[Bowl Classic]",desc:"[Riz, poulet croustillant, sauce maison, herbes fraîches]",prix:9.90,plat:true,img:"bowl-classic.jpg",tags:[]},
-
-  // ---- BOWLS XL / A PARTAGER ----
-  {id:"xl1",cat:"Bowls XL",nom:"[Bowl XL Signature]",desc:"[Grand format, double portion de poulet croustillant sur riz, double sauce]",prix:15.90,plat:true,img:"bowl-xl.jpg",tags:["best"]},
-  {id:"xl2",cat:"Bowls XL",nom:"[Bowl XL à partager]",desc:"[Format généreux pour deux, poulet croustillant abondant]",prix:22.90,plat:true,img:"bowl-xl-partage.jpg",tags:[]},
+  // ---- BOWLS ----
+  {id:"bw1",cat:"Bowls",nom:"Bowl Signature",desc:"Riz, poulet croustillant, sauce blanche et sauce sucrée-épicée, oignons frits, herbes, sésame.",prix:10.90,plat:true,img:"bowl-signature.jpg",tags:["best"]},
+  {id:"bw2",cat:"Bowls",nom:"Bowl Fire",desc:"Poulet croustillant glacé sauce piquante, sauce blanche en contraste, oignons frits.",prix:11.90,plat:true,img:"bowl-epice.jpg",tags:["epice","new"]},
 
   // ---- SUPPLEMENTS ----
-  {id:"su1",cat:"Suppléments",nom:"[Supplément poulet croustillant]",desc:"[Une portion de poulet croustillant en plus]",prix:3.90,plat:false,img:"supp-poulet.jpg",tags:["best"]},
-  {id:"su2",cat:"Suppléments",nom:"[Frites]",desc:"[Frites, à compléter]",prix:3.50,plat:false,img:"sides.jpg",tags:[]},
-  {id:"su3",cat:"Suppléments",nom:"[Oignons frits]",desc:"[Portion d'oignons frits croustillants]",prix:2.50,plat:false,img:"supp-oignons.jpg",tags:[]},
-  {id:"su4",cat:"Suppléments",nom:"[Riz nature]",desc:"[Une portion de riz en plus]",prix:2.50,plat:false,img:"supp-riz.jpg",tags:[]},
-
-  // ---- SAUCES ----
-  {id:"sa1",cat:"Sauces",nom:"[Sauce blanche signature]",desc:"[À renseigner]",prix:1.00,plat:false,img:"sauces.jpg",tags:["best"]},
-  {id:"sa2",cat:"Sauces",nom:"[Sauce sucrée-épicée]",desc:"[À renseigner]",prix:1.00,plat:false,img:"sauces.jpg",tags:["epice"]},
-  {id:"sa3",cat:"Sauces",nom:"[Sauce maison]",desc:"[À renseigner]",prix:1.00,plat:false,img:"sauces.jpg",tags:[]},
-
-  // ---- BOISSONS ----
-  {id:"bo1",cat:"Boissons",nom:"[Soda 33cl]",desc:"[Au choix selon disponibilité]",prix:2.00,plat:false,img:"boissons.jpg",tags:[]},
-  {id:"bo2",cat:"Boissons",nom:"[Eau 50cl]",desc:"[Plate ou pétillante]",prix:1.50,plat:false,img:"boissons.jpg",tags:[]},
-  {id:"bo3",cat:"Boissons",nom:"[Boisson fraîche maison]",desc:"[Selon préparation du jour]",prix:2.50,plat:false,img:"boissons.jpg",tags:["new"]},
+  {id:"su1",cat:"Suppléments",nom:"Supplément poulet croustillant",desc:"Une portion de poulet croustillant en plus.",prix:3.90,plat:false,img:"supp-poulet.jpg",tags:["best"]},
 
   // ---- DESSERTS ----
-  {id:"de1",cat:"Desserts",nom:"[Dessert 1]",desc:"[À renseigner]",prix:2.50,plat:false,img:"desserts.jpg",tags:[]},
-  {id:"de2",cat:"Desserts",nom:"[Dessert 2]",desc:"[À renseigner]",prix:3.00,plat:false,img:"desserts.jpg",tags:["best"]},
-  {id:"de3",cat:"Desserts",nom:"[Dessert 3]",desc:"[À renseigner]",prix:3.50,plat:false,img:"desserts.jpg",tags:["new"]}
+  {id:"de1",cat:"Desserts",nom:"Brownie",desc:"Brownie chocolat, texture dense.",prix:3.00,plat:false,img:"desserts.jpg",tags:[]}
 ];
 
-/* FORMULE COMBO mise en avant (incitation panier moyen, sans forcer).
-   PLACEHOLDER : remplace nom, desc et prix par la vraie formule. */
+/* Pas de formule combo affichée tant que le menu complet n'est pas fourni.
+   Mettre afficherCombo à true et compléter COMBO le moment venu. */
+const afficherCombo = false;
 const COMBO = {
   id:"combo1",cat:"Formules",
   nom:"[Menu Crousti]",
-  desc:"[Un bowl signature, une boisson et un dessert. La formule qui revient moins cher que pris séparément. À ajuster.]",
-  prix:14.90,plat:true,img:"hero.jpg",tags:["best"]
+  desc:"[Formule à définir avec le vrai menu]",
+  prix:0,plat:true,img:"hero.jpg",tags:["best"]
 };
 
-/* SUGGESTIONS UPSELL : déclenchées au bon moment, un tap pour accepter,
-   un tap pour ignorer. Jamais bloquant, montrées une fois par session.
-   Les "id" pointent vers des produits du MENU ci-dessus. */
+/* SUGGESTIONS UPSELL : uniquement vers des produits réellement présents.
+   Une seule suggestion pertinente : le supplément poulet après un bowl. */
 const UPSELL = {
-  boisson:    {q:"Tu ajoutes une boisson ?", id:"bo1"},
-  supplement: {q:"Tu rajoutes du poulet croustillant ?", id:"su1"},
-  sauce:      {q:"Une sauce en plus ?", id:"sa1"},
-  dessert:    {q:"Un dessert pour finir ?", id:"de2"}
+  supplement: {q:"Tu rajoutes du poulet croustillant ?", id:"su1"}
 };
 
 /* ================================================================
@@ -917,6 +909,7 @@ let panier = chargerPanier();
 let modeChoisi = "emporter";          // emporter | surplace | livraison
 let upsellMontres = {};               // suivi des suggestions déjà affichées
 let toutLeMenu = [COMBO, ...MENU];    // index unique pour retrouver un produit
+let infoClient = {prenom:"",tel:"",creneau:"",adresse:""}; // infos saisies
 
 function chargerPanier(){
   try{ return JSON.parse(localStorage.getItem(LS_PANIER)) || {}; }
@@ -967,6 +960,7 @@ function tagHTML(tags){
 
 function rendreCombo(){
   const z=document.getElementById("combo-zone");
+  if(!afficherCombo){ z.style.display="none"; z.innerHTML=""; return; }
   z.innerHTML=`
     <span class="flag">FORMULE · LE BON PLAN</span>
     <h3>${COMBO.nom}</h3>
@@ -1062,9 +1056,10 @@ function majBadge(){
 
 /* upsell : on choisit la première suggestion pertinente non encore montrée */
 function declencherUpsell(){
-  const ordre=["frites","boisson","sauce","dessert"];
+  const ordre=Object.keys(UPSELL);
   for(const k of ordre){
     const sugg=UPSELL[k];
+    if(!sugg) continue;
     if(upsellMontres[k]) continue;
     if(panier[sugg.id]) continue;       // déjà dans le panier, on saute
     upsellMontres[k]=true;
@@ -1136,8 +1131,27 @@ function rendreDrawer(){
         <button class="mode" data-mode="livraison" aria-pressed="${modeChoisi==='livraison'}">Livraison</button>
       </div>
       <div class="champ-adr ${modeChoisi==='livraison'?'on':''}" id="zone-adr">
-        <textarea id="adresse-livraison" placeholder="Adresse complète de livraison (rue, code, étage)"></textarea>
+        <textarea id="adresse-livraison" placeholder="Adresse complète de livraison (rue, code, étage)">${infoClient.adresse||''}</textarea>
       </div>
+    </div>`;
+
+  // infos client obligatoires avant envoi : prénom, téléphone, créneau
+  html+=`
+    <div class="client-bloc">
+      <div class="lab">Tes infos pour la commande</div>
+      <div class="champ">
+        <label for="cli-prenom">Prénom</label>
+        <input type="text" id="cli-prenom" autocomplete="given-name" placeholder="Ex : Yanis" value="${(infoClient.prenom||'').replace(/"/g,'&quot;')}">
+      </div>
+      <div class="champ">
+        <label for="cli-tel">Téléphone</label>
+        <input type="tel" id="cli-tel" autocomplete="tel" inputmode="tel" placeholder="Ex : 06 12 34 56 78" value="${(infoClient.tel||'').replace(/"/g,'&quot;')}">
+      </div>
+      <div class="champ">
+        <label for="cli-creneau">Créneau souhaité</label>
+        <input type="text" id="cli-creneau" placeholder="Ex : dès que possible, ou 19h30" value="${(infoClient.creneau||'').replace(/"/g,'&quot;')}">
+      </div>
+      <p class="client-err" id="cli-err"></p>
     </div>`;
 
   body.innerHTML=html;
@@ -1165,10 +1179,19 @@ function fermerPanier(){
    Brancher un paiement plus tard = remplacer l'appel à cette fonction
    par l'étape de paiement, sans toucher au reste.
    ================================================================ */
-function construireMessageWA(){
+function genererNumeroCommande(){
+  // numéro court aléatoire, lisible, type CMD-7421
+  return "CMD-"+Math.floor(1000+Math.random()*9000);
+}
+
+function construireMessageWA(numCmd){
   const libMode={emporter:"À emporter",surplace:"Sur place",livraison:"Livraison"};
-  let m="Bonjour, je passe commande sur le site Crousti Poulet.\n\n";
-  m+="Commande :\n";
+  let m="Nouvelle commande Crousti Poulet\n\n";
+  m+="Commande n "+numCmd+"\n";
+  m+="Client : "+(infoClient.prenom.trim()||"[non renseigné]")+"\n";
+  m+="Téléphone : "+(infoClient.tel.trim()||"[non renseigné]")+"\n";
+  m+="Créneau : "+(infoClient.creneau.trim()||"[non précisé]")+"\n";
+  m+="\nDétail :\n";
   for(const id in panier){
     const p=produitParId(id);
     m+="- "+panier[id]+" x "+p.nom+"  ("+fmt(p.prix*panier[id])+")\n";
@@ -1177,14 +1200,7 @@ function construireMessageWA(){
   m+="\nMode : "+libMode[modeChoisi];
 
   if(modeChoisi==="livraison"){
-    const adr=(document.getElementById("adresse-livraison")||{}).value||"";
-    m+="\nAdresse : "+(adr.trim()||"[adresse à préciser]");
-  }
-
-  // carte fidélité : on rappelle l'identité si activée
-  const fid=lireFidelite();
-  if(fid && fid.prenom){
-    m+="\n\nCarte fidélité : "+fid.prenom+" ("+fid.tel+")";
+    m+="\nAdresse : "+(infoClient.adresse.trim()||"[adresse à préciser]");
   }
   m+="\n\nMerci.";
   return encodeURIComponent(m);
@@ -1192,8 +1208,31 @@ function construireMessageWA(){
 
 function envoyerCommande(){
   if(nbArticles()===0)return;
+
+  // on récupère la dernière saisie au cas où
+  capturerInfoClient();
+
+  // contrôle des infos client obligatoires : prénom, tel, créneau
+  const err=document.getElementById("cli-err");
+  const manque=[];
+  if(!infoClient.prenom.trim())  manque.push("ton prénom");
+  if(!infoClient.tel.trim())     manque.push("ton téléphone");
+  if(!infoClient.creneau.trim()) manque.push("le créneau souhaité");
+  if(modeChoisi==="livraison" && !infoClient.adresse.trim()) manque.push("l'adresse de livraison");
+
+  if(manque.length){
+    if(err){
+      err.textContent="Il manque : "+manque.join(", ")+".";
+      err.style.display="block";
+      const cible=document.getElementById("cli-prenom");
+      if(cible) cible.focus();
+    }
+    return;
+  }
+
+  const numCmd=genererNumeroCommande();
   const num=CONFIG.whatsapp.replace(/\D/g,"");
-  const url="https://wa.me/"+num+"?text="+construireMessageWA();
+  const url="https://wa.me/"+num+"?text="+construireMessageWA(numCmd);
 
   // commande validée via le site : on crédite un tampon fidélité
   crediterFidelite();
@@ -1294,6 +1333,17 @@ function initReveal(){
 /* ================================================================
    ECOUTEURS D'EVENEMENTS (délégation)
    ================================================================ */
+function capturerInfoClient(){
+  const p=document.getElementById("cli-prenom");
+  const t=document.getElementById("cli-tel");
+  const c=document.getElementById("cli-creneau");
+  const a=document.getElementById("adresse-livraison");
+  if(p) infoClient.prenom=p.value;
+  if(t) infoClient.tel=t.value;
+  if(c) infoClient.creneau=c.value;
+  if(a) infoClient.adresse=a.value;
+}
+
 function initEvents(){
   // clics globaux délégués
   document.body.addEventListener("click",(e)=>{
@@ -1311,8 +1361,16 @@ function initEvents(){
       upsellEnAttente=null; rendreDrawer();
     }
     else if(t.hasAttribute("data-mode")){
+      capturerInfoClient();              // ne pas perdre la saisie en cours
       modeChoisi=t.getAttribute("data-mode");
       rendreDrawer();
+    }
+  });
+
+  // saisie des infos client : on garde l'état à jour en continu
+  document.body.addEventListener("input",(e)=>{
+    if(e.target.closest("#cli-prenom,#cli-tel,#cli-creneau,#adresse-livraison")){
+      capturerInfoClient();
     }
   });
 
